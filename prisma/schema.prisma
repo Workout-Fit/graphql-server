@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String        @id @default(uuid()) @map("user_id") @db.Uuid
+  username    String        @db.VarChar(30)
+  email       String        @db.VarChar(100)
+  password    String        @db.Char(64)
+  workouts Workout[] 
+  profileInfo ProfileInfo?
+
+  @@map("user")
+}
+
+model Difficulty {
+  id   Int    @id @map("difficulty_id")
+  name String @db.VarChar(20)
+  exercises Exercise[]
+
+  @@map("difficulty")
+}
+
+model Equipment {
+  id   Int    @id @map("equipment_id")
+  name String @db.VarChar(40)
+  exercises Exercise[]
+  
+  @@map("equipment")
+}
+
+model ExerciseType {
+  id   Int    @id @map("exercise_type_id")
+  name String @db.VarChar(30)
+  exercises Exercise[]
+
+  @@map("exercise_type")
+}
+
+model MuscleGroup {
+  id   Int    @id @map("muscle_group_id")
+  name String @db.VarChar(25)
+  exercises Exercise[]
+
+  @@map("muscle_group")
+}
+
+model ProfileInfo {
+  id             String  @id @map("user_id") @db.Uuid
+  user           User    @relation(fields: [id], references: [id])
+  height         Decimal @db.Decimal(3, 2)
+  weight         Decimal @db.Decimal(3, 2)
+  bio            String  @db.VarChar(140)
+  name           String  @db.VarChar(50)
+  profilePicture String  @db.VarChar(200)
+
+  @@map("profile_info")
+}
+
+model Exercise {
+  id             String @id @default(uuid()) @map("exercise_id") @db.Uuid
+  name           String @db.VarChar(100)
+  muscleGroupId  Int    @map("muscle_group_id") 
+  exerciseTypeId Int    @map("exercise_type_id")
+  equipmentId    Int    @map("equipment_id")
+  difficultyId   Int    @map("difficulty_id")
+  muscleGroup MuscleGroup @relation(fields: [muscleGroupId], references: [id])
+  exerciseType ExerciseType @relation(fields: [exerciseTypeId], references: [id])
+  equipment Equipment @relation(fields: [equipmentId], references: [id])
+  difficulty Difficulty @relation(fields: [difficultyId], references: [id])
+  workouts Workout[]
+
+  @@map("exercise")
+}
+
+model Workout {
+  id String @id @default(uuid()) @map("workout_id") @db.Uuid
+  authorId String @map("author_id") @db.Uuid
+  author User @relation(fields: [authorId], references: [id])
+  name String @db.VarChar(50)
+  description String @db.VarChar(140)
+  creationDate DateTime @map("creation_date") @db.Timestamptz()
+  basedOnId String @map("based_on") @db.Uuid
+  basedOn Workout? @relation("BasedWorkouts", fields: [basedOnId], references: [id])
+  createdFrom Workout[] @relation("BasedWorkouts")
+  exercises Exercise[]
+
+  @@map("workout")
+}
