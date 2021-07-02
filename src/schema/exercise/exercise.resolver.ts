@@ -1,46 +1,20 @@
-import prisma from '../../db';
+import { Context } from '../../context';
+import * as equipmentService from './exercise.service';
 
 const resolvers = {
   Query: {
-    getExercises: async (parent, args) =>
-      prisma.exercise.findMany({
-        where: {
-          muscleGroupId: args.muscleGroupId,
-          exerciseTypeId: args.exerciseTypeId,
-          equipmentId: args.equipmentId,
-          difficultyId: args.difficultyId,
-        },
-        include: {
-          muscleGroup: true,
-          exerciseType: true,
-          equipment: true,
-          difficulty: true,
-        },
-      }),
-    getExerciseById: async (parent, args) =>
-      await prisma.exercise.findUnique({
-        where: { id: args.id },
-        include: {
-          muscleGroup: true,
-          exerciseType: true,
-          equipment: true,
-          difficulty: true,
-        },
-      }),
-    getExercisesByName: async (parent, args) =>
-      await prisma.exercise.findMany({
-        where: {
-          name: {
-            contains: args.name,
-          },
-        },
-        include: {
-          muscleGroup: true,
-          exerciseType: true,
-          equipment: true,
-          difficulty: true,
-        },
-      }),
+    getExercises: async (_, args, ctx: Context) =>
+      await equipmentService.getExercises(
+        args.muscleGroupId,
+        args.exerciseTypeId,
+        args.equipmentId,
+        args.difficultyId,
+        ctx
+      ),
+    getExerciseById: async (_, args, ctx: Context) =>
+      await equipmentService.getExerciseById(args.id, ctx),
+    getExercisesByName: async (_, args, ctx: Context) =>
+      await equipmentService.getExercisesByName(args.name, ctx),
   },
 };
 

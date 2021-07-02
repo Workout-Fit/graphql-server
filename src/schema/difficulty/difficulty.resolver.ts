@@ -1,16 +1,14 @@
-import prisma from '../../db';
+import { Context } from '../../context';
+import * as difficultyService from './difficulty.service';
 
 const resolvers = {
   Query: {
-    getDifficultyLevels: async (parent) => prisma.difficulty.findMany(),
-    getDifficultyLevelsByName: async (parent, args) =>
-      await prisma.difficulty.findMany({
-        where: { name: args.name }
-      }),
-    getDifficultyById: async (parent, args) =>
-      await prisma.difficulty.findUnique({
-        where: { id: args.id }
-      }),
+    getDifficultyLevels: async (parent, _, ctx: Context) =>
+      await difficultyService.getDifficultyLevels(ctx),
+    getDifficultyLevelsByName: async (_, args, ctx: Context) =>
+      await difficultyService.getDifficultyLevelsByName(args.name, ctx),
+    getDifficultyById: async (_, args, ctx: Context) =>
+      await difficultyService.getDifficultyById(args.id, ctx),
   },
 };
 

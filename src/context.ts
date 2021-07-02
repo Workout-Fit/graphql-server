@@ -6,6 +6,8 @@ export interface Context {
   prisma: PrismaClient;
 }
 
-export const context: Context = {
+const context: Context = {
   prisma: prisma,
 };
+
+export default context;

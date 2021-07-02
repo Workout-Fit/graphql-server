@@ -1,16 +1,14 @@
-import prisma from '../../db';
+import { Context } from '../../context';
+import * as muscleGroupService from './muscleGroup.service';
 
 const resolvers = {
   Query: {
-    getMuscleGroups: async (parent) => prisma.muscleGroup.findMany(),
-    getMuscleGroupsByName: async (parent, args) =>
-      await prisma.muscleGroup.findMany({
-        where: { name: args.name }
-      }),
-    getMuscleGroupById: async (parent, args) =>
-      await prisma.muscleGroup.findUnique({
-        where: { id: args.id }
-      }),
+    getMuscleGroups: async (parent, _, ctx: Context) =>
+      await muscleGroupService.getMuscleGroups(ctx),
+    getMuscleGroupsByName: async (_, args, ctx: Context) =>
+      await muscleGroupService.getMuscleGroupsByName(args.name, ctx),
+    getMuscleGroupById: async (_, args, ctx: Context) =>
+      await muscleGroupService.getMuscleGroupById(args.id, ctx),
   },
 };
 

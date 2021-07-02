@@ -1,110 +1,118 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id          String        @id @default(uuid()) @map("user_id") @db.Uuid
-  username    String        @db.VarChar(30)
-  email       String        @db.VarChar(100)
-  password    String        @db.Char(64)
-  workouts Workout[] 
+  id          String       @id @default(dbgenerated("uuid_generate_v4()")) @map("user_id") @db.Uuid
+  username    String       @unique @db.VarChar(30)
+  email       String       @unique @db.VarChar(100)
+  password    String       @db.Char(64)
   profileInfo ProfileInfo?
+  workout     Workout[]    @relation("userToworkout")
 
   @@map("user")
 }
 
 model Difficulty {
-  id   Int    @id @map("difficulty_id")
-  name String @db.VarChar(20)
+  id        Int        @id @default(autoincrement()) @map("difficulty_id")
+  name      String     @db.VarChar(20)
   exercises Exercise[]
 
   @@map("difficulty")
 }
 
 model Equipment {
-  id   Int    @id @map("equipment_id")
-  name String @db.VarChar(40)
+  id        Int        @id @default(autoincrement()) @map("equipment_id")
+  name      String     @db.VarChar(40)
   exercises Exercise[]
-  
+
   @@map("equipment")
 }
 
 model ExerciseType {
-  id   Int    @id @map("exercise_type_id")
-  name String @db.VarChar(30)
+  id        Int        @id @default(autoincrement()) @map("exercise_type_id")
+  name      String     @db.VarChar(30)
   exercises Exercise[]
 
   @@map("exercise_type")
 }
 
 model MuscleGroup {
-  id   Int    @id @map("muscle_group_id")
-  name String @db.VarChar(25)
+  id        Int        @id @default(autoincrement()) @map("muscle_group_id")
+  name      String     @db.VarChar(25)
   exercises Exercise[]
 
   @@map("muscle_group")
 }
 
 model ProfileInfo {
-  id             String  @id @map("user_id") @db.Uuid
-  user           User    @relation(fields: [id], references: [id])
-  height         Decimal @db.Decimal(3, 2)
-  weight         Decimal @db.Decimal(3, 2)
-  bio            String  @db.VarChar(140)
-  name           String  @db.VarChar(50)
-  profilePicture String  @db.VarChar(200)
+  id              String  @id @map("user_id") @db.Uuid
+  height          Decimal @db.Decimal
+  weight          Decimal @db.Decimal
+  bio             String  @db.VarChar(140)
+  profile_picture String  @db.VarChar(200)
+  name            String  @db.VarChar(50)
+  user            User    @relation(fields: [id], references: [id])
 
+  @@index([id], name: "fkidx_14")
   @@map("profile_info")
 }
 
 model Exercise {
-  id             String @id @default(uuid()) @map("exercise_id") @db.Uuid
-  name           String @db.VarChar(100)
-  muscleGroupId  Int    @map("muscle_group_id") 
-  exerciseTypeId Int    @map("exercise_type_id")
-  equipmentId    Int    @map("equipment_id")
-  difficultyId   Int    @map("difficulty_id")
-  muscleGroup MuscleGroup @relation(fields: [muscleGroupId], references: [id])
-  exerciseType ExerciseType @relation(fields: [exerciseTypeId], references: [id])
-  equipment Equipment @relation(fields: [equipmentId], references: [id])
-  difficulty Difficulty @relation(fields: [difficultyId], references: [id])
-  workouts WorkoutExercise[]
+  id             String            @id @default(dbgenerated("uuid_generate_v4()")) @map("exercise_id") @db.Uuid
+  name           String            @db.VarChar(100)
+  muscleGroupId  Int               @map("muscle_group_id")
+  exerciseTypeId Int               @map("exercise_type_id")
+  equipmentId    Int               @map("equipment_id")
+  difficultyId   Int               @map("difficulty_id")
+  difficulty     Difficulty        @relation(fields: [difficultyId], references: [id])
+  equipment      Equipment         @relation(fields: [equipmentId], references: [id])
+  exerciseType   ExerciseType      @relation(fields: [exerciseTypeId], references: [id])
+  muscleGroup    MuscleGroup       @relation(fields: [muscleGroupId], references: [id])
+  workouts       WorkoutExercise[]
 
+  @@index([difficultyId], name: "fkidx_115")
+  @@index([muscleGroupId], name: "fkidx_61")
+  @@index([exerciseTypeId], name: "fkidx_92")
+  @@index([equipmentId], name: "fkidx_99")
   @@map("exercise")
 }
 
 model Workout {
-  id String @id @default(uuid()) @map("workout_id") @db.Uuid
-  authorId String @map("author_id") @db.Uuid
-  author User @relation(fields: [authorId], references: [id])
-  name String @db.VarChar(50)
-  description String @db.VarChar(140)
-  creationDate DateTime @map("creation_date") @db.Timestamptz()
-  basedOnId String @map("based_on") @db.Uuid
-  basedOn Workout? @relation("BasedWorkouts", fields: [basedOnId], references: [id])
-  createdFrom Workout[] @relation("BasedWorkouts")
-  exercises WorkoutExercise[]
+  id           String            @id @default(dbgenerated("uuid_generate_v4()")) @map("workout_id") @db.Uuid
+  userId       String            @map("user_id") @db.Uuid
+  name         String            @db.VarChar(50)
+  description  String            @db.VarChar(140)
+  creationDate DateTime          @default(dbgenerated("timezone('utc'::text, now())")) @map("creation_date") @ignore @db.Timestamptz(6)
+  basedOnId    String?           @map("based_on") @db.Uuid
+  basedOn      Workout?          @relation("BasedWorkouts", fields: [basedOnId], references: [id])
+  user         User              @relation("userToworkout", fields: [userId], references: [id])
+  baseOf       Workout[]         @relation("BasedWorkouts")
+  exercises    WorkoutExercise[]
 
+  @@index([userId], name: "fkidx_24")
+  @@index([basedOnId], name: "fkidx_80")
   @@map("workout")
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model WorkoutExercise {
-  sets Int
+  sets        Int
   repetitions Int
-  notes String @db.VarChar(140)
-  exerciseId String @map("exercise_id") @db.Uuid
-  exercise Exercise @relation(fields: [exerciseId], references: [id])
-  workoutId String @map("workout_id") @db.Uuid
-  workout Workout @relation(fields: [workoutId], references: [id])
+  notes       String?  @db.VarChar(140)
+  exerciseId  String   @map("exercise_id") @db.Uuid
+  workoutId   String   @map("workout_id") @db.Uuid
+  rest        Int
+  id          Int      @id @default(autoincrement()) @map("workout_exercise_id")
+  exercise    Exercise @relation(fields: [exerciseId], references: [id])
+  workout     Workout  @relation(fields: [workoutId], references: [id])
 
+  @@index([exerciseId], name: "fkidx_71")
+  @@index([workoutId], name: "fkidx_74")
   @@map("workout_exercise")
-  @@id([exerciseId, workoutId])
 }

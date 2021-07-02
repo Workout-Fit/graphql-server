@@ -1,16 +1,14 @@
-import prisma from '../../db';
+import { Context } from '../../context';
+import * as exerciseTypeService from './exerciseType.service';
 
 const resolvers = {
   Query: {
-    getExerciseTypes: async (parent) => prisma.exerciseType.findMany(),
-    getExerciseTypesByName: async (parent, args) =>
-      await prisma.exerciseType.findMany({
-        where: { name: args.name }
-      }),
-    getExerciseTypeById: async (parent, args) =>
-      await prisma.exerciseType.findUnique({
-        where: { id: args.id }
-      }),
+    getExerciseTypes: async (parent, _, ctx: Context) =>
+      await exerciseTypeService.getExerciseTypes(ctx),
+    getExerciseTypesByName: async (_, args, ctx: Context) =>
+      await exerciseTypeService.getExerciseTypesByName(args.name, ctx),
+    getExerciseTypeById: async (_, args, ctx: Context) =>
+      await exerciseTypeService.getExerciseTypeById(args.id, ctx),
   },
 };
 

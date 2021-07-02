@@ -1,15 +1,20 @@
-import prisma from '../../db';
+import { Context } from '../../context';
 
 const resolvers = {
   Query: {
-    getEquipments: async (parent) => prisma.equipment.findMany(),
-    getEquipmentsByName: async (parent, args) =>
-      await prisma.equipment.findMany({
-        where: { name: args.name }
+    getEquipments: async (parent, _, ctx: Context) =>
+      await ctx.prisma.equipment.findMany(),
+    getEquipmentsByName: async (_, args, ctx: Context) =>
+      await ctx.prisma.equipment.findMany({
+        where: { 
+            name: {
+            contains: args.name
+          } 
+        },
       }),
-    getEquipmentById: async (parent, args) =>
-      await prisma.equipment.findUnique({
-        where: { id: args.id }
+    getEquipmentById: async (_, args, ctx: Context) =>
+      await ctx.prisma.equipment.findUnique({
+        where: { id: args.id },
       }),
   },
 };
