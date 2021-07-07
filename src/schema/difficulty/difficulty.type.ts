@@ -4,11 +4,11 @@ export default gql`
   extend type Query {
     getDifficultyLevels: [Difficulty]
     getDifficultyLevelsByName(name: String!): Difficulty
-    getDifficultyById(id: ID!): Difficulty
+    getDifficultyById(id: String!): Difficulty
   }
 
   type Difficulty {
-    id: ID!
+    id: String!
     name: String!
   }
 `;

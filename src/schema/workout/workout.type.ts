@@ -2,17 +2,17 @@ import gql from 'graphql-tag';
 
 export default gql`
   extend type Query {
-    getWorkoutsByUserId(userId: ID!): [Workout]
-    getWorkoutById(id: ID!): Workout
+    getWorkoutsByUserId(userId: String!): [Workout]
+    getWorkoutById(id: String!): Workout
   }
 
   type Mutation {
     createWorkout(workout: WorkoutInput!): Workout
-    copyWorkoutById(workoutId: ID!, userId: ID!): Workout
+    copyWorkoutById(workoutId: String!, userId: String!): Workout
   }
 
   input WorkoutInput {
-    userId: ID!
+    userId: String!
     name: String!
     description: String
     basedOnId: String
@@ -28,8 +28,8 @@ export default gql`
   }
 
   type Workout {
-    id: ID!
-    userId: ID!
+    id: String!
+    userId: String!
     name: String!
     description: String
     basedOnId: String

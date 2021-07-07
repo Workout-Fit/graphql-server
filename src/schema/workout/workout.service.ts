@@ -22,7 +22,7 @@ export const getWorkoutsByUserId = async (userId: string, ctx: Context) => {
       user: true,
     },
   });
-  console.dir(workouts[0].exercises[0]);
+
   return workouts.map((workout) => getWorkoutMuscleGroups(workout));
 };
 

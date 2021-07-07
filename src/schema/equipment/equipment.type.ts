@@ -4,11 +4,11 @@ export default gql`
   extend type Query {
     getEquipments: [Equipment]
     getEquipmentsByName(name: String!): Equipment
-    getEquipmentById(id: ID!): Equipment
+    getEquipmentById(id: String!): Equipment
   }
 
   type Equipment {
-    id: ID!
+    id: String!
     name: String!
   }
 `;

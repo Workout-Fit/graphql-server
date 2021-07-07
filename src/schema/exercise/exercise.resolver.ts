@@ -5,6 +5,7 @@ const resolvers = {
   Query: {
     getExercises: async (_, args, ctx: Context) =>
       await equipmentService.getExercises(
+        args.name,
         args.muscleGroupId,
         args.exerciseTypeId,
         args.equipmentId,
@@ -13,8 +14,6 @@ const resolvers = {
       ),
     getExerciseById: async (_, args, ctx: Context) =>
       await equipmentService.getExerciseById(args.id, ctx),
-    getExercisesByName: async (_, args, ctx: Context) =>
-      await equipmentService.getExercisesByName(args.name, ctx),
   },
 };
 

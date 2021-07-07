@@ -2,11 +2,11 @@ import gql from 'graphql-tag';
 
 export default gql`
   extend type Query {
-    getUserById(id: ID!): User
+    getUserById(id: String!): User
   }
 
   type User {
-    id: ID! 
+    id: String! 
     username: String
     email: String
     password: String

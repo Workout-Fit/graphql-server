@@ -4,11 +4,11 @@ export default gql`
   extend type Query {
     getMuscleGroups: [MuscleGroup]
     getMuscleGroupsByName(name: String!): MuscleGroup
-    getMuscleGroupById(id: ID!): MuscleGroup
+    getMuscleGroupById(id: String!): MuscleGroup
   }
 
   type MuscleGroup {
-    id: ID!
+    id: String!
     name: String!
   }
 `;

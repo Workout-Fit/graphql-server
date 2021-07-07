@@ -1,6 +1,7 @@
 import { Context } from '../../context';
 
 export const getExercises = async (
+  name: string,
   muscleGroupId: number,
   exerciseTypeId: number,
   equipmentId: number,
@@ -8,7 +9,14 @@ export const getExercises = async (
   ctx: Context
 ) =>
   await ctx.prisma.exercise.findMany({
-    where: { muscleGroupId, exerciseTypeId, equipmentId, difficultyId },
+    take: 20,
+    where: {
+      name: { contains: name },
+      muscleGroupId,
+      exerciseTypeId,
+      equipmentId,
+      difficultyId,
+    },
     include: {
       muscleGroup: true,
       exerciseType: true,

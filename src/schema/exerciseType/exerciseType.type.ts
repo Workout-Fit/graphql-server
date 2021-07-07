@@ -4,11 +4,11 @@ export default gql`
   type Query {
     getExerciseTypes: [ExerciseType]
     getExerciseTypesByName(name: String!): ExerciseType
-    getExerciseTypeById(id: ID!): ExerciseType
+    getExerciseTypeById(id: String!): ExerciseType
   }
 
   type ExerciseType {
-    id: ID!
+    id: String!
     name: String!
   }
 `;
