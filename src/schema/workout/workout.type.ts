@@ -8,7 +8,8 @@ export default gql`
 
   type Mutation {
     createWorkout(workout: WorkoutInput!): Workout
-    copyWorkoutById(workoutId: String!, userId: String!): Workout
+    copyWorkoutById(id: String!, userId: String!): Workout
+    deleteWorkout(id: String!): Workout
   }
 
   input WorkoutInput {

@@ -15,6 +15,9 @@ const resolvers = {
 
     copyWorkoutById: async (_, args, ctx: Context) =>
       await workoutService.copyWorkoutById(args.workoutId, args.userId, ctx),
+    
+    deleteWorkout: async (_, args, ctx: Context) =>
+      await workoutService.deleteWorkout(args.id, ctx),
   },
 };
 
