@@ -115,14 +115,13 @@ export const copyWorkoutById = async (workoutId, userId, ctx: Context) => {
   return getWorkoutMuscleGroups(copiedWorkout);
 };
 
-
 export const deleteWorkout = async (id: string, ctx: Context) => {
   await ctx.prisma.workoutExercise.deleteMany({
-    where: { workoutId: id }
+    where: { workoutId: id },
   });
 
-  return await ctx.prisma.workout.delete({ 
+  return await ctx.prisma.workout.delete({
     where: { id },
     include: { user: true },
   });
-}
+};

@@ -10,6 +10,6 @@ new ApolloServer({
   subscriptions: {
     path: '/subscriptions',
   },
-}).listen({ port: PORT }).then(({ url }) =>
-  console.log(`🚀 Server ready at: ${url}`)
-);
+})
+  .listen({ port: PORT })
+  .then(({ url }) => console.log(`🚀 Server ready at: ${url}`));

@@ -4,6 +4,7 @@ import difficultySchema from './difficulty';
 import equipmentSchema from './equipment';
 import exerciseSchema from './exercise';
 import exerciseTypeSchema from './exerciseType';
+import language from './language';
 import muscleGroupSchema from './muscleGroup';
 import userSchema from './user';
 import workoutSchema from './workout';
@@ -16,7 +17,8 @@ export default makeExecutableSchema({
     exerciseTypeSchema.typeDefs,
     muscleGroupSchema.typeDefs,
     workoutSchema.typeDefs,
-    userSchema.typeDefs
+    userSchema.typeDefs,
+    language.typeDefs,
   ],
   resolvers: [
     difficultySchema.resolvers,
@@ -25,6 +27,7 @@ export default makeExecutableSchema({
     exerciseTypeSchema.resolvers,
     muscleGroupSchema.resolvers,
     workoutSchema.resolvers,
-    userSchema.resolvers
+    userSchema.resolvers,
+    language.resolvers,
   ],
 });

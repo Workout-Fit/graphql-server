@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon 'src/server.ts' --exec 'ts-node' src/server.ts -e ts,graphql"
+    "start:dev": "nodemon 'src/server.ts' --exec 'ts-node' src/server.ts -e ts,graphql",
+    "fmt": "prettier --write src/"
   },
   "dependencies": {
     "-": "0.0.1",
-    "@prisma/client": "2.26.0",
+    "@prisma/client": "^2.26.0",
     "apollo-server": "2.25.2",
     "g": "^2.0.1",
     "graphql": "15.5.1",
@@ -23,7 +24,8 @@
     "@types/node": "12.20.15",
     "@types/ws": "7.4.5",
     "nodemon": "^2.0.9",
-    "prisma": "2.26.0",
+    "prettier": "^2.3.2",
+    "prisma": "^2.26.0",
     "ts-node": "10.0.0",
     "ts-node-dev": "1.1.7",
     "typescript": "4.3.4"

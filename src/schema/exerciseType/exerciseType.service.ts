@@ -8,6 +8,7 @@ export const getExerciseTypesByName = async (name: string, ctx: Context) =>
     where: {
       name: {
         contains: name,
+        mode: 'insensitive',
       },
     },
   });

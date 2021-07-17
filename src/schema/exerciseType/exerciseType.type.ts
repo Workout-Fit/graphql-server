@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  type Query {
+  extend type Query {
     getExerciseTypes: [ExerciseType]
-    getExerciseTypesByName(name: String!): ExerciseType
+    getExerciseTypesByName(name: String!): [ExerciseType]
     getExerciseTypeById(id: String!): ExerciseType
   }
 

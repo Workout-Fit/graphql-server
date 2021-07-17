@@ -8,6 +8,7 @@ export const getEquipmentsByName = async (name: string, ctx: Context) =>
     where: {
       name: {
         contains: name,
+        mode: 'insensitive',
       },
     },
   });

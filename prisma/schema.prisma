@@ -70,12 +70,15 @@ model Exercise {
   exerciseTypeId Int               @map("exercise_type_id")
   equipmentId    Int               @map("equipment_id")
   difficultyId   Int               @map("difficulty_id")
+  languageId    Int                @default(1) @map("language_id")
   difficulty     Difficulty        @relation(fields: [difficultyId], references: [id])
   equipment      Equipment         @relation(fields: [equipmentId], references: [id])
   exerciseType   ExerciseType      @relation(fields: [exerciseTypeId], references: [id])
+  language       Language          @relation("exerciseToLanguage", fields: [languageId], references: [id])
   muscleGroup    MuscleGroup       @relation(fields: [muscleGroupId], references: [id])
   workouts       WorkoutExercise[]
 
+  @@index([languageId], name: "fkidx_106")
   @@index([difficultyId], name: "fkidx_115")
   @@index([muscleGroupId], name: "fkidx_61")
   @@index([exerciseTypeId], name: "fkidx_92")
@@ -115,4 +118,13 @@ model WorkoutExercise {
   @@index([exerciseId], name: "fkidx_71")
   @@index([workoutId], name: "fkidx_74")
   @@map("workout_exercise")
+}
+
+model Language {
+  id            Int        @id @default(autoincrement()) @map("language_id")
+  name          String     @db.VarChar(30)
+  languageCode  String     @db.Char(5) @map("language_code")
+  exercise      Exercise[] @relation("exerciseToLanguage")
+  
+  @@map("language")
 }

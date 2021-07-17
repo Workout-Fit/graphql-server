@@ -1,14 +1,14 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  extend type Query {
+  type Query {
     getExercises(
-      name: String,
-      muscleGroupId: Int, 
-      exerciseTypeId: Int,
-      equipmentId: Int,
+      name: String
+      muscleGroupId: Int
+      exerciseTypeId: Int
+      equipmentId: Int
       difficultyId: Int
-      ): [Exercise]
+    ): [Exercise]
     getExerciseById(id: String!): Exercise
   }
 
@@ -23,5 +23,6 @@ export default gql`
     exerciseType: ExerciseType
     equipment: Equipment
     difficulty: Difficulty
+    language: Language
   }
-`
+`;

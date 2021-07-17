@@ -6,10 +6,10 @@ const resolvers = {
       await ctx.prisma.equipment.findMany(),
     getEquipmentsByName: async (_, args, ctx: Context) =>
       await ctx.prisma.equipment.findMany({
-        where: { 
-            name: {
-            contains: args.name
-          } 
+        where: {
+          name: {
+            contains: args.name,
+          },
         },
       }),
     getEquipmentById: async (_, args, ctx: Context) =>
