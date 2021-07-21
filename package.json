@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node src/server.ts",
     "start:dev": "nodemon 'src/server.ts' --exec 'ts-node' src/server.ts -e ts,graphql --ignore 'src/types.d.ts' ",
     "fmt": "prettier --write src/"
   },
