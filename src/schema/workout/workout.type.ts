@@ -8,11 +8,13 @@ export default gql`
 
   type Mutation {
     createWorkout(workout: WorkoutInput!): Workout
+    updateWorkout(workout: WorkoutInput!): Workout
     copyWorkoutById(id: String!, userId: String!): Workout
     deleteWorkout(id: String!): Workout
   }
 
   input WorkoutInput {
+    id: String
     userId: String!
     name: String!
     description: String

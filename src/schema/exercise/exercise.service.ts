@@ -35,19 +35,3 @@ export const getExerciseById = async (id, ctx: Context) =>
       difficulty: true,
     },
   });
-
-export const getExercisesByName = async (name, ctx: Context) =>
-  await ctx.prisma.exercise.findMany({
-    where: {
-      name: {
-        contains: name,
-        mode: 'insensitive',
-      },
-    },
-    include: {
-      muscleGroup: true,
-      exerciseType: true,
-      equipment: true,
-      difficulty: true,
-    },
-  });
