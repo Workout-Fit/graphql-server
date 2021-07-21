@@ -1,8 +1,11 @@
 {
   "name": "workout-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create and share Workout routines",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "ts-node src/server.ts",
     "start:dev": "nodemon 'src/server.ts' --exec 'ts-node' src/server.ts -e ts,graphql --ignore 'src/types.d.ts' ",
