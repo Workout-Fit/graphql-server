@@ -8,10 +8,7 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(dbgenerated("uuid_generate_v4()")) @map("user_id") @db.Uuid
-  username    String       @unique @db.VarChar(30)
-  email       String       @unique @db.VarChar(100)
-  password    String       @db.Char(64)
+  id          String       @id @default(dbgenerated("uuid_generate_v4()")) @map("user_id")
   profileInfo ProfileInfo?
   workout     Workout[]    @relation("userToworkout")
 
@@ -51,7 +48,7 @@ model MuscleGroup {
 }
 
 model ProfileInfo {
-  id              String  @id @map("user_id") @db.Uuid
+  id              String  @id @map("user_id")
   height          Decimal @db.Decimal
   weight          Decimal @db.Decimal
   bio             String  @db.VarChar(140)
@@ -70,7 +67,7 @@ model Exercise {
   exerciseTypeId Int               @map("exercise_type_id")
   equipmentId    Int               @map("equipment_id")
   difficultyId   Int               @map("difficulty_id")
-  languageId    Int                @default(1) @map("language_id")
+  languageId     Int               @default(1) @map("language_id")
   difficulty     Difficulty        @relation(fields: [difficultyId], references: [id])
   equipment      Equipment         @relation(fields: [equipmentId], references: [id])
   exerciseType   ExerciseType      @relation(fields: [exerciseTypeId], references: [id])
@@ -88,7 +85,7 @@ model Exercise {
 
 model Workout {
   id           String            @id @default(dbgenerated("uuid_generate_v4()")) @map("workout_id") @db.Uuid
-  userId       String            @map("user_id") @db.Uuid
+  userId       String            @map("user_id")
   name         String            @db.VarChar(50)
   description  String            @db.VarChar(140)
   creationDate DateTime          @default(dbgenerated("timezone('utc'::text, now())")) @map("creation_date") @ignore @db.Timestamptz(6)
@@ -121,10 +118,10 @@ model WorkoutExercise {
 }
 
 model Language {
-  id            Int        @id @default(autoincrement()) @map("language_id")
-  name          String     @db.VarChar(30)
-  languageCode  String     @db.Char(5) @map("language_code")
-  exercise      Exercise[] @relation("exerciseToLanguage")
-  
+  id           Int        @id @default(autoincrement()) @map("language_id")
+  name         String     @db.VarChar(30)
+  languageCode String     @map("language_code") @db.Char(5)
+  exercise     Exercise[] @relation("exerciseToLanguage")
+
   @@map("language")
 }
