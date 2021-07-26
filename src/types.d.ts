@@ -73,6 +73,7 @@ export interface GQLMutation {
   updateWorkout?: GQLWorkout;
   copyWorkoutById?: GQLWorkout;
   deleteWorkout?: GQLWorkout;
+  createUser?: GQLUser;
 }
 
 export interface GQLWorkoutInput {
@@ -118,20 +119,26 @@ export interface GQLWorkoutExercise {
 export interface GQLUser {
   id: string;
   username?: string;
-  email?: string;
-  password?: string;
   profileInfo?: GQLProfileInfo;
   workout?: Array<GQLWorkout | null>;
 }
 
-export interface GQLProfileInfo {
-  id: string;
+export interface GQLProfileInfoInput {
   height?: number;
   weight?: number;
   bio?: string;
-  profile_picture?: string;
+  profilePicture?: string;
+  username: string;
+  name: string;
+}
+
+export interface GQLProfileInfo {
+  height?: number;
+  weight?: number;
+  username?: string;
+  bio?: string;
+  profilePicture?: string;
   name?: string;
-  user?: GQLUser;
 }
 
 export interface GQLLanguage {
@@ -427,6 +434,7 @@ export interface GQLMutationTypeResolver<TParent = any> {
   updateWorkout?: MutationToUpdateWorkoutResolver<TParent>;
   copyWorkoutById?: MutationToCopyWorkoutByIdResolver<TParent>;
   deleteWorkout?: MutationToDeleteWorkoutResolver<TParent>;
+  createUser?: MutationToCreateUserResolver<TParent>;
 }
 
 export interface MutationToCreateWorkoutArgs {
@@ -456,6 +464,14 @@ export interface MutationToDeleteWorkoutArgs {
 }
 export interface MutationToDeleteWorkoutResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToDeleteWorkoutArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface MutationToCreateUserArgs {
+  userId: string;
+  profileInfo: GQLProfileInfoInput;
+}
+export interface MutationToCreateUserResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToCreateUserArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GQLWorkoutTypeResolver<TParent = any> {
@@ -552,8 +568,6 @@ export interface WorkoutExerciseToWorkoutResolver<TParent = any, TResult = any> 
 export interface GQLUserTypeResolver<TParent = any> {
   id?: UserToIdResolver<TParent>;
   username?: UserToUsernameResolver<TParent>;
-  email?: UserToEmailResolver<TParent>;
-  password?: UserToPasswordResolver<TParent>;
   profileInfo?: UserToProfileInfoResolver<TParent>;
   workout?: UserToWorkoutResolver<TParent>;
 }
@@ -566,14 +580,6 @@ export interface UserToUsernameResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface UserToEmailResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-}
-
-export interface UserToPasswordResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-}
-
 export interface UserToProfileInfoResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
@@ -583,17 +589,12 @@ export interface UserToWorkoutResolver<TParent = any, TResult = any> {
 }
 
 export interface GQLProfileInfoTypeResolver<TParent = any> {
-  id?: ProfileInfoToIdResolver<TParent>;
   height?: ProfileInfoToHeightResolver<TParent>;
   weight?: ProfileInfoToWeightResolver<TParent>;
+  username?: ProfileInfoToUsernameResolver<TParent>;
   bio?: ProfileInfoToBioResolver<TParent>;
-  profile_picture?: ProfileInfoToProfile_pictureResolver<TParent>;
+  profilePicture?: ProfileInfoToProfilePictureResolver<TParent>;
   name?: ProfileInfoToNameResolver<TParent>;
-  user?: ProfileInfoToUserResolver<TParent>;
-}
-
-export interface ProfileInfoToIdResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface ProfileInfoToHeightResolver<TParent = any, TResult = any> {
@@ -604,19 +605,19 @@ export interface ProfileInfoToWeightResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface ProfileInfoToUsernameResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
 export interface ProfileInfoToBioResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface ProfileInfoToProfile_pictureResolver<TParent = any, TResult = any> {
+export interface ProfileInfoToProfilePictureResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface ProfileInfoToNameResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-}
-
-export interface ProfileInfoToUserResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

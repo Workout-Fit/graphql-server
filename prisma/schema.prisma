@@ -48,13 +48,14 @@ model MuscleGroup {
 }
 
 model ProfileInfo {
-  id              String  @id @map("user_id")
-  height          Decimal @db.Decimal
-  weight          Decimal @db.Decimal
-  bio             String  @db.VarChar(140)
-  profile_picture String  @db.VarChar(200)
-  name            String  @db.VarChar(50)
-  user            User    @relation(fields: [id], references: [id])
+  id             String   @id @map("user_id")
+  height         Decimal? @db.Decimal
+  weight         Decimal? @db.Decimal
+  bio            String?  @db.VarChar(140)
+  profilePicture String?  @db.VarChar(200) @map("profile_picture")
+  name           String   @db.VarChar(50)
+  username       String   @unique @db.VarChar(20)
+  user           User     @relation(fields: [id], references: [id])
 
   @@index([id], name: "fkidx_14")
   @@map("profile_info")

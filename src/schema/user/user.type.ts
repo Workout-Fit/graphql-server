@@ -5,22 +5,32 @@ export default gql`
     getUserById(id: String!): User
   }
 
+  extend type Mutation {
+    createUser(userId: String!, profileInfo: ProfileInfoInput!): User
+  }
+
   type User {
     id: String!
     username: String
-    email: String
-    password: String
     profileInfo: ProfileInfo
     workout: [Workout]
   }
 
-  type ProfileInfo {
-    id: String!
+  input ProfileInfoInput {
     height: Float
     weight: Float
     bio: String
-    profile_picture: String
+    profilePicture: String
+    username: String!
+    name: String!
+  }
+
+  type ProfileInfo {
+    height: Float
+    weight: Float
+    username: String
+    bio: String
+    profilePicture: String
     name: String
-    user: User
   }
 `;
