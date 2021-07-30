@@ -11,7 +11,6 @@ export default gql`
 
   type User {
     id: String!
-    username: String
     profileInfo: ProfileInfo
     workout: [Workout]
   }

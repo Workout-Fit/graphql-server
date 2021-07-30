@@ -37,8 +37,8 @@ export default gql`
     description: String
     basedOnId: String
     basedOn: Workout
-    muscleGroups: [String]
-    user: User
+    muscleGroups: [String]!
+    user: User!
     exercises: [WorkoutExercise]
   }
 

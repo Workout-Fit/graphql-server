@@ -100,8 +100,8 @@ export interface GQLWorkout {
   description?: string;
   basedOnId?: string;
   basedOn?: GQLWorkout;
-  muscleGroups?: Array<string | null>;
-  user?: GQLUser;
+  muscleGroups: Array<string | null>;
+  user: GQLUser;
   exercises?: Array<GQLWorkoutExercise | null>;
 }
 
@@ -118,7 +118,6 @@ export interface GQLWorkoutExercise {
 
 export interface GQLUser {
   id: string;
-  username?: string;
   profileInfo?: GQLProfileInfo;
   workout?: Array<GQLWorkout | null>;
 }
@@ -567,16 +566,11 @@ export interface WorkoutExerciseToWorkoutResolver<TParent = any, TResult = any> 
 
 export interface GQLUserTypeResolver<TParent = any> {
   id?: UserToIdResolver<TParent>;
-  username?: UserToUsernameResolver<TParent>;
   profileInfo?: UserToProfileInfoResolver<TParent>;
   workout?: UserToWorkoutResolver<TParent>;
 }
 
 export interface UserToIdResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-}
-
-export interface UserToUsernameResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

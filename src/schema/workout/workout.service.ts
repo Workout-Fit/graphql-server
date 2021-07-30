@@ -39,7 +39,11 @@ export const getWorkoutById = async (id: string, ctx: Context) => {
           },
         },
       },
-      user: true,
+      user: {
+        include: {
+          profileInfo: true,
+        },
+      },
     },
   });
 
@@ -73,6 +77,11 @@ export const createWorkout = async (workout: GQLWorkoutInput, ctx: Context) => {
             exercise: {
               include: { muscleGroup: true },
             },
+          },
+        },
+        user: {
+          include: {
+            profileInfo: true,
           },
         },
       },
@@ -115,6 +124,11 @@ export const updateWorkout = async (workout: GQLWorkoutInput, ctx: Context) => {
             },
           },
         },
+        user: {
+          include: {
+            profileInfo: true,
+          },
+        },
       },
     });
 
@@ -148,9 +162,17 @@ export const copyWorkoutById = async (workoutId, userId, ctx: Context) => {
       },
       include: {
         exercises: {
-          include: { exercise: true },
+          include: {
+            exercise: {
+              include: { muscleGroup: true },
+            },
+          },
         },
-        user: true,
+        user: {
+          include: {
+            profileInfo: true,
+          },
+        },
       },
     });
 
