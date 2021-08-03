@@ -12,17 +12,26 @@ export const createUser = async (
   profileInfo: GQLProfileInfoInput,
   ctx: Context
 ) =>
-  await ctx.prisma.user.upsert({
-    where: { id: userId },
-    update: {
-      profileInfo: {
-        update: profileInfo,
-      },
-    },
-    create: {
+  await ctx.prisma.user.create({
+    data: {
       id: userId,
       profileInfo: {
         create: profileInfo,
+      },
+    },
+    include: { profileInfo: true },
+  });
+
+export const updateProfileInfo = async (
+  userId: string,
+  profileInfo: GQLProfileInfoInput,
+  ctx: Context
+) =>
+  await ctx.prisma.user.update({
+    where: { id: userId },
+    data: {
+      profileInfo: {
+        update: profileInfo,
       },
     },
     include: { profileInfo: true },

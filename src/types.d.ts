@@ -74,6 +74,7 @@ export interface GQLMutation {
   copyWorkoutById?: GQLWorkout;
   deleteWorkout?: GQLWorkout;
   createUser?: GQLUser;
+  updateProfileInfo?: GQLUser;
 }
 
 export interface GQLWorkoutInput {
@@ -434,6 +435,7 @@ export interface GQLMutationTypeResolver<TParent = any> {
   copyWorkoutById?: MutationToCopyWorkoutByIdResolver<TParent>;
   deleteWorkout?: MutationToDeleteWorkoutResolver<TParent>;
   createUser?: MutationToCreateUserResolver<TParent>;
+  updateProfileInfo?: MutationToUpdateProfileInfoResolver<TParent>;
 }
 
 export interface MutationToCreateWorkoutArgs {
@@ -471,6 +473,14 @@ export interface MutationToCreateUserArgs {
 }
 export interface MutationToCreateUserResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToCreateUserArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface MutationToUpdateProfileInfoArgs {
+  userId: string;
+  profileInfo: GQLProfileInfoInput;
+}
+export interface MutationToUpdateProfileInfoResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToUpdateProfileInfoArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GQLWorkoutTypeResolver<TParent = any> {

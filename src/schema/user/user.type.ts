@@ -7,6 +7,7 @@ export default gql`
 
   extend type Mutation {
     createUser(userId: String!, profileInfo: ProfileInfoInput!): User
+    updateProfileInfo(userId: String!, profileInfo: ProfileInfoInput!): User
   }
 
   type User {
