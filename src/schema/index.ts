@@ -1,10 +1,9 @@
 import { makeExecutableSchema } from 'graphql-tools';
-
 import difficultySchema from './difficulty';
 import equipmentSchema from './equipment';
 import exerciseSchema from './exercise';
 import exerciseTypeSchema from './exerciseType';
-import language from './language';
+import languageSchema from './language';
 import muscleGroupSchema from './muscleGroup';
 import userSchema from './user';
 import workoutSchema from './workout';
@@ -18,7 +17,7 @@ export default makeExecutableSchema({
     muscleGroupSchema.typeDefs,
     workoutSchema.typeDefs,
     userSchema.typeDefs,
-    language.typeDefs,
+    languageSchema.typeDefs,
   ],
   resolvers: [
     difficultySchema.resolvers,
@@ -28,6 +27,6 @@ export default makeExecutableSchema({
     muscleGroupSchema.resolvers,
     workoutSchema.resolvers,
     userSchema.resolvers,
-    language.resolvers,
+    languageSchema.resolvers,
   ],
 });
