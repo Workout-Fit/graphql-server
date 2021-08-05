@@ -1,5 +1,6 @@
 import { Context } from '../../context';
 import { GQLProfileInfoInput } from '../../types';
+import { uploadToBucket } from '../../utils/image';
 
 export const getUserById = async (id: string, ctx: Context) =>
   await ctx.prisma.user.findUnique({
@@ -26,13 +27,21 @@ export const updateProfileInfo = async (
   userId: string,
   profileInfo: GQLProfileInfoInput,
   ctx: Context
-) =>
-  await ctx.prisma.user.update({
+) => {
+  let profilePictureUrl;
+  if (profileInfo.profilePicture) {
+    const { createReadStream } = await profileInfo.profilePicture;
+    const stream = createReadStream();
+    profilePictureUrl = await uploadToBucket(stream);
+  }
+
+  return await ctx.prisma.user.update({
     where: { id: userId },
     data: {
       profileInfo: {
-        update: profileInfo,
+        update: { ...profileInfo, profilePicture: profilePictureUrl },
       },
     },
     include: { profileInfo: true },
   });
+};

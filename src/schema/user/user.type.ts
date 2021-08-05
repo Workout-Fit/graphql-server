@@ -20,7 +20,7 @@ export default gql`
     height: Float
     weight: Float
     bio: String
-    profilePicture: String
+    profilePicture: Upload
     username: String!
     name: String!
   }

@@ -9,18 +9,6 @@ import muscleGroupSchema from './muscleGroup';
 import userSchema from './user';
 import workoutSchema from './workout';
 
-export const resolvers = mergeResolvers([
-  { Upload: GraphQLUpload },
-  difficultySchema.resolvers,
-  equipmentSchema.resolvers,
-  exerciseSchema.resolvers,
-  exerciseTypeSchema.resolvers,
-  muscleGroupSchema.resolvers,
-  workoutSchema.resolvers,
-  userSchema.resolvers,
-  languageSchema.resolvers,
-]);
-
 export const typeDefs = mergeTypeDefs([
   gql`
     scalar Upload
@@ -33,4 +21,16 @@ export const typeDefs = mergeTypeDefs([
   workoutSchema.typeDefs,
   userSchema.typeDefs,
   languageSchema.typeDefs,
+]);
+
+export const resolvers = mergeResolvers([
+  { Upload: GraphQLUpload },
+  difficultySchema.resolvers,
+  equipmentSchema.resolvers,
+  exerciseSchema.resolvers,
+  exerciseTypeSchema.resolvers,
+  muscleGroupSchema.resolvers,
+  workoutSchema.resolvers,
+  userSchema.resolvers,
+  languageSchema.resolvers,
 ]);

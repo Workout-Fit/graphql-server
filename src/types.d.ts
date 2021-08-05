@@ -132,7 +132,7 @@ export interface GQLProfileInfoInput {
   height?: number;
   weight?: number;
   bio?: string;
-  profilePicture?: string;
+  profilePicture?: GQLUpload;
   username: string;
   name: string;
 }

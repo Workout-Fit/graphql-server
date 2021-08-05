@@ -1,17 +1,18 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { generateTypeScriptTypes } from 'graphql-schema-typescript';
+import { graphqlUploadExpress } from 'graphql-upload';
+import { ApolloServer } from 'apollo-server-express';
+import context from './context';
+import { typeDefs, resolvers } from './schema';
 
-const { generateTypeScriptTypes } = require('graphql-schema-typescript');
-const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
-const context = require('./context');
-const { typeDefs, resolvers } = require('./schema');
 
 const { PORT = 4000 } = process.env;
 
 async function startServer() {
   const server = new ApolloServer({ typeDefs, resolvers, context });
-  await server.start();
   const app = express();
+  await server.start();
   await generateTypeScriptTypes(
     makeExecutableSchema({ typeDefs, resolvers }),
     'src/types.d.ts',
@@ -19,11 +20,11 @@ async function startServer() {
   );
   console.log('✅ Types generated');
 
+  app.use(graphqlUploadExpress());
   server.applyMiddleware({ app });
 
-  app.listen({ port: PORT }, () =>
-    console.log(`🚀Server ready at port ${PORT}`)
-  );
+  await new Promise((resolve) => app.listen({ port: PORT }, resolve));
+  console.log(`🚀 Server ready at port ${PORT}`);
 }
 
 startServer();

@@ -1,4 +1,3 @@
-import { argsToArgsConfig } from 'graphql/type/definition';
 import { Context } from '../../context';
 import {
   MutationToCopyWorkoutByIdArgs,
