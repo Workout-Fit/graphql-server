@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import context from './context';
-import Logger from './utils/console';
+import logger from './utils/console';
 
 import express from 'express';
 
@@ -29,11 +29,11 @@ async function startServer() {
       server.applyMiddleware({ app });
 
       app.listen({ port: PORT }, () => {
-        success(`🚀 Server ready at port ${PORT}`);
+        logger.success(`🚀 Server ready at port ${PORT}`);
       });
     }
   } catch (e) {
-    log(e, 'red');
+    logger.error(e);
   }
 }
 

@@ -47,3 +47,5 @@ const logger = {
   success: (message: string) => log(message, 'green'),
   error: (message: string) => log(message, 'red'),
 };
+
+export default logger;

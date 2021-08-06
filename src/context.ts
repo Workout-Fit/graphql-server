@@ -9,7 +9,7 @@ export interface Context {
 }
 
 const context: Context = {
-  prisma: prisma,
+  prisma,
   bucketHost: BUCKET_HOST ?? '',
 };
 
