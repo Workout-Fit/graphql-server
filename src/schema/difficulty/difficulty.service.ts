@@ -1,9 +1,6 @@
 import { Context } from '../../context';
 
-export const getDifficultyLevels = async (ctx: Context) =>
-  ctx.prisma.difficulty.findMany();
-
-export const getDifficultyLevelsByName = async (name: string, ctx: Context) =>
+export const getDifficultyLevels = async (name: string, ctx: Context) =>
   await ctx.prisma.difficulty.findMany({
     where: {
       name: {

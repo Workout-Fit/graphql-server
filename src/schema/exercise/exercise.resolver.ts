@@ -1,20 +1,31 @@
+import { Arg, Ctx, Query, Resolver } from 'type-graphql';
 import { Context } from '../../context';
 import * as equipmentService from './exercise.service';
+import Exercise from './exercise.type';
 
-const resolvers = {
-  Query: {
-    getExercises: async (_, args, ctx: Context) =>
-      await equipmentService.getExercises(
-        args.name,
-        args.muscleGroupId,
-        args.exerciseTypeId,
-        args.equipmentId,
-        args.difficultyId,
-        ctx
-      ),
-    getExerciseById: async (_, args, ctx: Context) =>
-      await equipmentService.getExerciseById(args.id, ctx),
-  },
-};
+@Resolver()
+export default class ExerciseResolver {
+  @Query((returns) => [Exercise])
+  async getExercises(
+    @Arg('name', { nullable: true }) name: string,
+    @Arg('muscleGroupId', { nullable: true }) muscleGroupId: number,
+    @Arg('exerciseTypeId', { nullable: true }) exerciseTypeId: number,
+    @Arg('equipmentId', { nullable: true }) equipmentId: number,
+    @Arg('difficultyId', { nullable: true }) difficultyId: number,
+    @Ctx() ctx: Context
+  ) {
+    return await equipmentService.getExercises(
+      name,
+      muscleGroupId,
+      exerciseTypeId,
+      equipmentId,
+      difficultyId,
+      ctx
+    );
+  }
 
-export default resolvers;
+  @Query((returns) => Exercise)
+  async getExerciseById(@Arg('id') id: string, @Ctx() ctx: Context) {
+    return await equipmentService.getExerciseById(id, ctx);
+  }
+}

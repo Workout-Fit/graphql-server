@@ -1,22 +1,17 @@
-import { Context } from '../../context';
+import { Context } from 'context';
+import Equipment from './equipment.type';
+import * as equipmentService from './equipment.service';
+import { Resolver, Arg, Ctx } from 'type-graphql';
 
-const resolvers = {
-  Query: {
-    getEquipments: async (parent, _, ctx: Context) =>
-      await ctx.prisma.equipment.findMany(),
-    getEquipmentsByName: async (_, args, ctx: Context) =>
-      await ctx.prisma.equipment.findMany({
-        where: {
-          name: {
-            contains: args.name,
-          },
-        },
-      }),
-    getEquipmentById: async (_, args, ctx: Context) =>
-      await ctx.prisma.equipment.findUnique({
-        where: { id: args.id },
-      }),
-  },
-};
-
-export default resolvers;
+@Resolver((of) => Equipment)
+export default class EquipmentResolver {
+  async getEquipments(
+    @Arg('name', { nullable: true }) name: string,
+    @Ctx() ctx: Context
+  ) {
+    return await equipmentService.getEquipments(name, ctx);
+  }
+  async getEquipmentById(@Arg('id') id: number, @Ctx() ctx: Context) {
+    return await equipmentService.getEquipmentById(id, ctx);
+  }
+}

@@ -1,15 +1,20 @@
+import { Arg, Ctx, Query, Resolver } from 'type-graphql';
 import { Context } from '../../context';
 import * as muscleGroupService from './muscleGroup.service';
+import MuscleGroup from './muscleGroup.type';
 
-const resolvers = {
-  Query: {
-    getMuscleGroups: async (parent, _, ctx: Context) =>
-      await muscleGroupService.getMuscleGroups(ctx),
-    getMuscleGroupsByName: async (_, args, ctx: Context) =>
-      await muscleGroupService.getMuscleGroupsByName(args.name, ctx),
-    getMuscleGroupById: async (_, args, ctx: Context) =>
-      await muscleGroupService.getMuscleGroupById(args.id, ctx),
-  },
-};
+@Resolver((of) => MuscleGroup)
+export default class MuscleGroupResolver {
+  @Query((returns) => [MuscleGroup])
+  async getMuscleGroups(
+    @Arg('name', { nullable: true }) name: string,
+    @Ctx() ctx: Context
+  ) {
+    return await muscleGroupService.getMuscleGroups(name, ctx);
+  }
 
-export default resolvers;
+  @Query((returns) => MuscleGroup)
+  async getMuscleGroupById(@Arg('id') id: number, @Ctx() ctx: Context) {
+    return await muscleGroupService.getMuscleGroupById(id, ctx);
+  }
+}

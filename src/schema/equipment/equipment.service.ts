@@ -1,9 +1,6 @@
 import { Context } from '../../context';
 
-export const getEquipments = async (ctx: Context) =>
-  ctx.prisma.equipment.findMany();
-
-export const getEquipmentsByName = async (name: string, ctx: Context) =>
+export const getEquipments = async (name: string, ctx: Context) =>
   await ctx.prisma.equipment.findMany({
     where: {
       name: {

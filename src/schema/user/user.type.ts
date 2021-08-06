@@ -1,36 +1,53 @@
-import { gql } from 'apollo-server-express';
+import { ObjectType, InputType, Field } from 'type-graphql';
+import { GraphQLUpload, FileUpload } from 'graphql-upload';
 
-export default gql`
-  extend type Query {
-    getUserById(id: String!): User
-  }
+@ObjectType()
+export class ProfileInfo {
+  @Field()
+  username!: string;
 
-  extend type Mutation {
-    createUser(userId: String!, profileInfo: ProfileInfoInput!): User
-    updateProfileInfo(userId: String!, profileInfo: ProfileInfoInput!): User
-  }
+  @Field()
+  name!: string;
 
-  type User {
-    id: String!
-    profileInfo: ProfileInfo
-    workout: [Workout]
-  }
+  @Field({ nullable: true })
+  height?: number;
 
-  input ProfileInfoInput {
-    height: Float
-    weight: Float
-    bio: String
-    profilePicture: Upload
-    username: String!
-    name: String!
-  }
+  @Field({ nullable: true })
+  weight?: number;
 
-  type ProfileInfo {
-    height: Float
-    weight: Float
-    username: String
-    bio: String
-    profilePicture: String
-    name: String
-  }
-`;
+  @Field({ nullable: true })
+  bio?: string;
+
+  @Field((type) => GraphQLUpload, { nullable: true })
+  profilePicture?: FileUpload;
+}
+
+@ObjectType()
+export class User {
+  @Field()
+  id!: string;
+
+  @Field({ nullable: true })
+  profileInfo?: ProfileInfo;
+}
+
+@InputType()
+export class ProfileInfoInput {
+  @Field()
+  username!: string;
+
+  @Field()
+  name!: string;
+
+  @Field({ nullable: true })
+  height?: number;
+
+  @Field({ nullable: true })
+  weight?: number;
+
+  @Field({ nullable: true })
+  bio?: string;
+
+  @Field((type) => GraphQLUpload, { nullable: true })
+  profilePicture?: FileUpload;
+}

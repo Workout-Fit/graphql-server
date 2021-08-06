@@ -1,10 +1,11 @@
+import 'reflect-metadata';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { ApolloServer } from 'apollo-server-express';
 import context from './context';
-import schema from './schema';
 import { log } from './utils/console';
 import compression from 'compression';
 import helmet from 'helmet';
+import { buildSchema } from 'type-graphql';
 
 const express = require('express');
 
@@ -15,6 +16,9 @@ async function startServer() {
     if (!BUCKET_HOST)
       throw new Error('BUCKET_HOST environment variable required');
     else {
+      const schema = await buildSchema({
+        resolvers: [`${__dirname}/schema/**/*.resolver.ts`],
+      });
       const server = new ApolloServer({ schema, context });
       const app = express();
       await server.start();

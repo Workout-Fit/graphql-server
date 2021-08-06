@@ -1,14 +1,13 @@
-import { gql } from 'apollo-server-express';
+import { Field, ObjectType } from 'type-graphql';
 
-export default gql`
-  extend type Query {
-    getLanguages(name: String, languageCode: String): [Language]
-    getLanguageById(id: String!): Language
-  }
+@ObjectType()
+export default class Language {
+  @Field()
+  id!: number;
 
-  type Language {
-    id: String!
-    name: String!
-    languageCode: String!
-  }
-`;
+  @Field()
+  name!: string;
+
+  @Field()
+  languageCode!: string;
+}

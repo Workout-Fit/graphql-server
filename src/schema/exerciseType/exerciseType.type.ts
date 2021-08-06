@@ -1,14 +1,10 @@
-import { gql } from 'apollo-server-express';
+import { Field, ObjectType } from 'type-graphql';
 
-export default gql`
-  extend type Query {
-    getExerciseTypes: [ExerciseType]
-    getExerciseTypesByName(name: String!): [ExerciseType]
-    getExerciseTypeById(id: String!): ExerciseType
-  }
+@ObjectType()
+export default class ExerciseType {
+  @Field()
+  id!: number;
 
-  type ExerciseType {
-    id: String!
-    name: String!
-  }
-`;
+  @Field()
+  name!: string;
+}

@@ -1,14 +1,10 @@
-import { gql } from 'apollo-server-express';
+import { Field, ObjectType } from 'type-graphql';
 
-export default gql`
-  extend type Query {
-    getEquipments: [Equipment]
-    getEquipmentsByName(name: String!): Equipment
-    getEquipmentById(id: String!): Equipment
-  }
+@ObjectType()
+export default class Equipment {
+  @Field()
+  id!: number;
 
-  type Equipment {
-    id: String!
-    name: String!
-  }
-`;
+  @Field()
+  name!: string;
+}

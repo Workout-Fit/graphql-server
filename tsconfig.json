@@ -3,10 +3,14 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "rootDir": "src",
-    "lib": ["esnext"],
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": ["es2018", "esnext.asynciterable"],
     "strict": true,
     "noImplicitAny": false,
-    "experimentalDecorators": true
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": "./src"
   },
   "include": ["src/**/*"]
 }

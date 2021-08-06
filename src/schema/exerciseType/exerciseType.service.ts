@@ -1,9 +1,6 @@
 import { Context } from '../../context';
 
-export const getExerciseTypes = async (ctx: Context) =>
-  ctx.prisma.exerciseType.findMany();
-
-export const getExerciseTypesByName = async (name: string, ctx: Context) =>
+export const getExerciseTypes = async (name: string, ctx: Context) =>
   await ctx.prisma.exerciseType.findMany({
     where: {
       name: {
