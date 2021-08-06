@@ -1,28 +1,30 @@
-import { gql } from 'apollo-server-express';
+import { ObjectType, Field } from 'type-graphql';
+import Difficulty from '../difficulty/difficulty.type';
+import Equipment from '../equipment/equipment.type';
+import ExerciseType from '../exerciseType/exerciseType.type';
+import Language from '../language/language.type';
+import MuscleGroup from '../muscleGroup/muscleGroup.type';
 
-export default gql`
-  type Query {
-    getExercises(
-      name: String
-      muscleGroupId: Int
-      exerciseTypeId: Int
-      equipmentId: Int
-      difficultyId: Int
-    ): [Exercise]
-    getExerciseById(id: String!): Exercise
-  }
+@ObjectType()
+export default class Exercise {
+  @Field()
+  id!: string;
 
-  type Exercise {
-    id: String!
-    name: String
-    muscleGroupId: Int
-    exerciseTypeId: Int
-    equipmentId: Int
-    difficultyId: Int
-    muscleGroup: MuscleGroup
-    exerciseType: ExerciseType
-    equipment: Equipment
-    difficulty: Difficulty
-    language: Language
-  }
-`;
+  @Field()
+  name!: string;
+
+  @Field()
+  muscleGroup!: MuscleGroup;
+
+  @Field()
+  exerciseType!: ExerciseType;
+
+  @Field()
+  equipment!: Equipment;
+
+  @Field()
+  difficulty!: Difficulty;
+
+  @Field()
+  language!: Language;
+}

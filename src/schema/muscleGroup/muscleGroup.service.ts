@@ -1,9 +1,6 @@
 import { Context } from '../../context';
 
-export const getMuscleGroups = async (ctx: Context) =>
-  ctx.prisma.muscleGroup.findMany();
-
-export const getMuscleGroupsByName = async (name: string, ctx: Context) =>
+export const getMuscleGroups = async (name: string, ctx: Context) =>
   await ctx.prisma.muscleGroup.findMany({
     where: {
       name: {

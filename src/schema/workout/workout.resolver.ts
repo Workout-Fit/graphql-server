@@ -1,43 +1,58 @@
-import { Context } from '../../context';
 import {
-  MutationToCopyWorkoutByIdArgs,
-  MutationToCreateWorkoutArgs,
-  MutationToDeleteWorkoutArgs,
-  QueryToGetWorkoutByIdArgs,
-  QueryToGetWorkoutsByUserIdArgs,
-} from '../../types';
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  ResolverInterface,
+} from 'type-graphql';
+import { Context } from '../../context';
 import * as workoutService from './workout.service';
+import { Workout, WorkoutInput } from './workout.type';
 
-const resolvers = {
-  Query: {
-    getWorkoutsByUserId: async (
-      _,
-      { userId }: QueryToGetWorkoutsByUserIdArgs,
-      ctx: Context
-    ) => await workoutService.getWorkoutsByUserId(userId, ctx),
+@Resolver((of) => Workout)
+export default class WorkoutResolver {
+  @Query((returns) => [Workout])
+  async getWorkoutsByUserId(
+    @Arg('userId') userId: string,
+    @Ctx() ctx: Context
+  ) {
+    return await workoutService.getWorkoutsByUserId(userId, ctx);
+  }
 
-    getWorkoutById: async (
-      _,
-      { id }: QueryToGetWorkoutByIdArgs,
-      ctx: Context
-    ) => await workoutService.getWorkoutById(id, ctx),
-  },
-  Mutation: {
-    createWorkout: async (_, args: MutationToCreateWorkoutArgs, ctx: Context) =>
-      await workoutService.createWorkout(args.workout, ctx),
+  @Query((returns) => Workout)
+  async getWorkoutById(@Arg('id') id: string, @Ctx() ctx: Context) {
+    return await workoutService.getWorkoutById(id, ctx);
+  }
 
-    copyWorkoutById: async (
-      _,
-      args: MutationToCopyWorkoutByIdArgs,
-      ctx: Context
-    ) => await workoutService.copyWorkoutById(args.id, args.userId, ctx),
+  @Mutation((returns) => Workout)
+  async createWorkout(
+    @Arg('workout') workout: WorkoutInput,
+    @Ctx() ctx: Context
+  ) {
+    return await workoutService.createWorkout(workout, ctx);
+  }
 
-    deleteWorkout: async (_, args: MutationToDeleteWorkoutArgs, ctx: Context) =>
-      await workoutService.deleteWorkout(args.id, ctx),
+  @Mutation((returns) => Workout)
+  async copyWorkoutById(
+    @Arg('id') id: string,
+    @Arg('userId') userId: string,
+    @Ctx() ctx: Context
+  ) {
+    return await workoutService.copyWorkoutById(id, userId, ctx);
+  }
 
-    updateWorkout: async (_, args, ctx: Context) =>
-      await workoutService.updateWorkout(args.workout, ctx),
-  },
-};
+  @Mutation((returns) => Workout)
+  async deleteWorkout(@Arg('id') id: string, @Ctx() ctx: Context) {
+    await workoutService.deleteWorkout(id, ctx);
+  }
 
-export default resolvers;
+  @Mutation((returns) => Workout)
+  async updateWorkout(
+    @Arg('id') id: string,
+    @Arg('workout') workout: WorkoutInput,
+    @Ctx() ctx: Context
+  ) {
+    return await workoutService.updateWorkout(id, workout, ctx);
+  }
+}

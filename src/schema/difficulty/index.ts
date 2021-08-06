@@ -1,5 +1,5 @@
 import resolvers from './difficulty.resolver';
-import typeDefs from './difficulty.type';
+import typeDefs from './difficulty';
 
 export default {
   resolvers,

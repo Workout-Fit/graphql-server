@@ -1,6 +1,6 @@
 import { Context } from '../../context';
-import { GQLProfileInfoInput } from '../../types';
 import { uploadToBucket } from '../../utils/image';
+import { ProfileInfoInput } from './user.type';
 
 export const getUserById = async (id: string, ctx: Context) =>
   await ctx.prisma.user.findUnique({
@@ -10,7 +10,7 @@ export const getUserById = async (id: string, ctx: Context) =>
 
 export const createUser = async (
   userId: string,
-  profileInfo: GQLProfileInfoInput,
+  profileInfo: ProfileInfoInput,
   ctx: Context
 ) =>
   await ctx.prisma.user.create({
@@ -25,7 +25,7 @@ export const createUser = async (
 
 export const updateProfileInfo = async (
   userId: string,
-  profileInfo: GQLProfileInfoInput,
+  profileInfo: ProfileInfoInput,
   ctx: Context
 ) => {
   let profilePictureUrl;

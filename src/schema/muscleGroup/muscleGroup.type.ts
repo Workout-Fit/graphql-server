@@ -1,14 +1,10 @@
-import { gql } from 'apollo-server-express';
+import { Field, ObjectType } from 'type-graphql';
 
-export default gql`
-  extend type Query {
-    getMuscleGroups: [MuscleGroup]
-    getMuscleGroupsByName(name: String!): MuscleGroup
-    getMuscleGroupById(id: String!): MuscleGroup
-  }
+@ObjectType()
+export default class MuscleGroup {
+  @Field()
+  id!: number;
 
-  type MuscleGroup {
-    id: String!
-    name: String!
-  }
-`;
+  @Field()
+  name!: string;
+}

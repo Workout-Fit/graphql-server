@@ -1,14 +1,10 @@
-import { gql } from 'apollo-server-express';
+import { ObjectType, Field } from 'type-graphql';
 
-export default gql`
-  extend type Query {
-    getDifficultyLevels: [Difficulty]
-    getDifficultyLevelsByName(name: String!): Difficulty
-    getDifficultyById(id: String!): Difficulty
-  }
+@ObjectType()
+export default class Difficulty {
+  @Field()
+  id!: number;
 
-  type Difficulty {
-    id: String!
-    name: String!
-  }
-`;
+  @Field()
+  name!: string;
+}

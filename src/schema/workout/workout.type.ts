@@ -1,55 +1,93 @@
-import { gql } from 'apollo-server-express';
+import Exercise from '../exercise/exercise.type';
+import { Field, InputType, ObjectType } from 'type-graphql';
+import { User } from '../user/user.type';
 
-export default gql`
-  extend type Query {
-    getWorkoutsByUserId(userId: String!): [Workout]
-    getWorkoutById(id: String!): Workout
-  }
+@ObjectType()
+export class WorkoutExercise {
+  @Field()
+  exerciseId!: string;
 
-  type Mutation {
-    createWorkout(workout: WorkoutInput!): Workout
-    updateWorkout(workout: WorkoutInput!): Workout
-    copyWorkoutById(id: String!, userId: String!): Workout
-    deleteWorkout(id: String!): Workout
-  }
+  @Field()
+  exercise!: Exercise;
 
-  input WorkoutInput {
-    id: String
-    userId: String!
-    name: String!
-    description: String
-    basedOnId: String
-    exercises: [ExercisesInput]
-  }
+  @Field()
+  workoutId!: string;
 
-  input ExercisesInput {
-    exerciseId: String!
-    sets: Int!
-    rest: Int!
-    repetitions: Int!
-    notes: String
-  }
+  @Field()
+  sets!: number;
 
-  type Workout {
-    id: String!
-    userId: String!
-    name: String!
-    description: String
-    basedOnId: String
-    basedOn: Workout
-    muscleGroups: [String]!
-    user: User!
-    exercises: [WorkoutExercise]
-  }
+  @Field()
+  rest!: number;
 
-  type WorkoutExercise {
-    exerciseId: String!
-    workoutId: String!
-    sets: Int!
-    rest: Int!
-    repetitions: Int!
-    notes: String
-    exercise: Exercise
-    workout: Workout
-  }
-`;
+  @Field()
+  repetitions!: number;
+
+  @Field({ nullable: true })
+  notes?: string;
+}
+
+@InputType()
+export class WorkoutExerciseInput {
+  @Field()
+  exerciseId!: string;
+
+  @Field()
+  workoutId!: string;
+
+  @Field()
+  sets!: number;
+
+  @Field()
+  rest!: number;
+
+  @Field()
+  repetitions!: number;
+
+  @Field({ nullable: true })
+  notes?: string;
+}
+
+@InputType()
+export class WorkoutInput {
+  @Field()
+  userId!: string;
+
+  @Field()
+  name!: string;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field({ nullable: true })
+  basedOnId?: string;
+
+  @Field((type) => [WorkoutExerciseInput])
+  exercises!: WorkoutExerciseInput[];
+}
+
+@ObjectType()
+export class Workout {
+  @Field()
+  id!: string;
+
+  @Field()
+  userId!: string;
+
+  @Field()
+  name!: string;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field({ nullable: true })
+  basedOn?: Workout;
+
+  @Field((type) => [String])
+  muscleGroups!: string[];
+
+  @Field()
+  user!: User;
+
+  @Field((type) => [WorkoutExercise])
+  exercises!: WorkoutExercise[];
+}

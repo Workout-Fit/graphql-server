@@ -1,7 +1,11 @@
 import { Maybe } from '@graphql-tools/utils';
-import { Prisma, WorkoutExercise } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { Context } from '../../context';
-import { GQLExercisesInput, GQLWorkoutInput } from '../../types';
+import {
+  WorkoutExercise,
+  WorkoutExerciseInput,
+  WorkoutInput,
+} from './workout.type';
 
 const getWorkoutMuscleGroups = (workout) => ({
   ...workout,
@@ -50,22 +54,24 @@ export const getWorkoutById = async (id: string, ctx: Context) => {
   return getWorkoutMuscleGroups(workout);
 };
 
-export const createWorkout = async (workout: GQLWorkoutInput, ctx: Context) => {
+export const createWorkout = async (workout: WorkoutInput, ctx: Context) => {
   const createdWorkout =
     await ctx.prisma.workout.create<Prisma.WorkoutCreateArgs>({
       data: {
         name: workout.name,
         description: workout?.description || '',
         exercises: {
-          create: workout.exercises!.map((data: Maybe<GQLExercisesInput>) => ({
-            sets: data!.sets,
-            rest: data!.rest,
-            repetitions: data!.repetitions,
-            notes: data?.notes || '',
-            exercise: {
-              connect: { id: data!.exerciseId },
-            },
-          })),
+          create: workout.exercises!.map(
+            (data: Maybe<WorkoutExerciseInput>) => ({
+              sets: data!.sets,
+              rest: data!.rest,
+              repetitions: data!.repetitions,
+              notes: data?.notes || '',
+              exercise: {
+                connect: { id: data!.exerciseId },
+              },
+            })
+          ),
         },
         user: {
           connect: { id: workout.userId },
@@ -90,27 +96,33 @@ export const createWorkout = async (workout: GQLWorkoutInput, ctx: Context) => {
   return getWorkoutMuscleGroups(createdWorkout);
 };
 
-export const updateWorkout = async (workout: GQLWorkoutInput, ctx: Context) => {
+export const updateWorkout = async (
+  id: string,
+  workout: WorkoutInput,
+  ctx: Context
+) => {
   await ctx.prisma.workoutExercise.deleteMany({
-    where: { workoutId: workout.id },
+    where: { workoutId: id },
   });
 
   const updatedWorkout =
     await ctx.prisma.workout.update<Prisma.WorkoutUpdateArgs>({
-      where: { id: workout.id },
+      where: { id },
       data: {
         name: workout.name,
         description: workout.description,
         exercises: {
-          create: workout.exercises?.map((data: Maybe<GQLExercisesInput>) => ({
-            sets: data!.sets,
-            rest: data!.rest,
-            repetitions: data!.repetitions,
-            notes: data!.notes,
-            exercise: {
-              connect: { id: data?.exerciseId },
-            },
-          })),
+          create: workout.exercises?.map(
+            (data: Maybe<WorkoutExerciseInput>) => ({
+              sets: data!.sets,
+              rest: data!.rest,
+              repetitions: data!.repetitions,
+              notes: data!.notes,
+              exercise: {
+                connect: { id: data?.exerciseId },
+              },
+            })
+          ),
         },
         user: {
           connect: { id: workout.userId },
@@ -135,7 +147,11 @@ export const updateWorkout = async (workout: GQLWorkoutInput, ctx: Context) => {
   return getWorkoutMuscleGroups(updatedWorkout);
 };
 
-export const copyWorkoutById = async (workoutId, userId, ctx: Context) => {
+export const copyWorkoutById = async (
+  workoutId: string,
+  userId: string,
+  ctx: Context
+) => {
   const workout = await getWorkoutById(workoutId, ctx);
   const copiedWorkout =
     await ctx.prisma.workout.create<Prisma.WorkoutCreateArgs>({
