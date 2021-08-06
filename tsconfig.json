@@ -10,6 +10,8 @@
     "noImplicitAny": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "baseUrl": "./src"
   },
   "include": ["src/**/*"]

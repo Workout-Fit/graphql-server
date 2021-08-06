@@ -1,13 +1,11 @@
-import 'reflect-metadata';
-import { graphqlUploadExpress } from 'graphql-upload';
 import { ApolloServer } from 'apollo-server-express';
-import context from './context';
-import { writeFile } from 'fs';
-import { log } from './utils/console';
 import compression from 'compression';
+import { graphqlUploadExpress } from 'graphql-upload';
 import helmet from 'helmet';
+import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
-import { printSchema } from 'graphql';
+import context from './context';
+import { log } from './utils/console';
 
 const express = require('express');
 
