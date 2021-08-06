@@ -1,4 +1,3 @@
-import { generateTypeScriptTypes } from '@peergrade/graphql-schema-typescript';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { ApolloServer } from 'apollo-server-express';
 import context from './context';
@@ -9,7 +8,7 @@ import helmet from 'helmet';
 
 const express = require('express');
 
-const { PORT = 4000, NODE_ENV, BUCKET_HOST } = process.env;
+const { PORT = 4000, BUCKET_HOST } = process.env;
 
 async function startServer() {
   try {
@@ -19,10 +18,6 @@ async function startServer() {
       const server = new ApolloServer({ schema, context });
       const app = express();
       await server.start();
-      if (NODE_ENV !== 'production') {
-        await generateTypeScriptTypes(schema, 'src/types.d.ts', {});
-        log('✅ Types generated', 'green');
-      }
 
       app.use(helmet());
       app.use(compression());
