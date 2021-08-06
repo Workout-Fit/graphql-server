@@ -8,14 +8,7 @@ type Color =
   | 'cyan'
   | 'white';
 
-export const log = (message: string, foreground?: Color, background?: Color) =>
-  console.log(
-    `${colors.foreground[foreground ?? ''] ?? ''}${
-      colors.background[background ?? ''] ?? ''
-    }${message}${colors.reset}`
-  );
-
-export const colors: {
+const colors: {
   reset: string;
   foreground: { [key in Color]: string };
   background: { [key in Color]: string };
@@ -41,4 +34,16 @@ export const colors: {
     cyan: '\x1b[46m',
     white: '\x1b[47m',
   },
+};
+
+const log = (message: string, foreground?: Color, background?: Color) =>
+  console.log(
+    `${colors.foreground[foreground ?? ''] ?? ''}${
+      colors.background[background ?? ''] ?? ''
+    }${message}${colors.reset}`
+  );
+
+const logger = {
+  success: (message: string) => log(message, 'green'),
+  error: (message: string) => log(message, 'red'),
 };

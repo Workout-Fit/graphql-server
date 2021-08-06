@@ -3,9 +3,9 @@ import { Context } from '../../context';
 import * as muscleGroupService from './muscleGroup.service';
 import MuscleGroup from './muscleGroup.type';
 
-@Resolver((of) => MuscleGroup)
+@Resolver(() => MuscleGroup)
 export default class MuscleGroupResolver {
-  @Query((returns) => [MuscleGroup])
+  @Query(() => [MuscleGroup])
   async getMuscleGroups(
     @Arg('name', { nullable: true }) name: string,
     @Ctx() ctx: Context
@@ -13,7 +13,7 @@ export default class MuscleGroupResolver {
     return await muscleGroupService.getMuscleGroups(name, ctx);
   }
 
-  @Query((returns) => MuscleGroup)
+  @Query(() => MuscleGroup)
   async getMuscleGroupById(@Arg('id') id: number, @Ctx() ctx: Context) {
     return await muscleGroupService.getMuscleGroupById(id, ctx);
   }

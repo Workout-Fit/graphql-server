@@ -3,9 +3,9 @@ import { Context } from '../../context';
 import * as workoutService from './workout.service';
 import { Workout, WorkoutInput } from './workout.type';
 
-@Resolver((of) => Workout)
+@Resolver(() => Workout)
 export default class WorkoutResolver {
-  @Query((returns) => [Workout])
+  @Query(() => [Workout])
   async getWorkoutsByUserId(
     @Arg('userId') userId: string,
     @Ctx() ctx: Context
@@ -13,12 +13,12 @@ export default class WorkoutResolver {
     return await workoutService.getWorkoutsByUserId(userId, ctx);
   }
 
-  @Query((returns) => Workout)
+  @Query(() => Workout)
   async getWorkoutById(@Arg('id') id: string, @Ctx() ctx: Context) {
     return await workoutService.getWorkoutById(id, ctx);
   }
 
-  @Mutation((returns) => Workout)
+  @Mutation(() => Workout)
   async createWorkout(
     @Arg('workout') workout: WorkoutInput,
     @Ctx() ctx: Context
@@ -26,7 +26,7 @@ export default class WorkoutResolver {
     return await workoutService.createWorkout(workout, ctx);
   }
 
-  @Mutation((returns) => Workout)
+  @Mutation(() => Workout)
   async copyWorkoutById(
     @Arg('id') id: string,
     @Arg('userId') userId: string,
@@ -35,12 +35,12 @@ export default class WorkoutResolver {
     return await workoutService.copyWorkoutById(id, userId, ctx);
   }
 
-  @Mutation((returns) => Workout)
+  @Mutation(() => Workout)
   async deleteWorkout(@Arg('id') id: string, @Ctx() ctx: Context) {
     await workoutService.deleteWorkout(id, ctx);
   }
 
-  @Mutation((returns) => Workout)
+  @Mutation(() => Workout)
   async updateWorkout(
     @Arg('id') id: string,
     @Arg('workout') workout: WorkoutInput,

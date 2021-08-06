@@ -3,7 +3,7 @@ import Equipment from './equipment.type';
 import * as equipmentService from './equipment.service';
 import { Resolver, Arg, Ctx } from 'type-graphql';
 
-@Resolver((of) => Equipment)
+@Resolver(() => Equipment)
 export default class EquipmentResolver {
   async getEquipments(
     @Arg('name', { nullable: true }) name: string,

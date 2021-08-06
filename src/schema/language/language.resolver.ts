@@ -3,9 +3,9 @@ import { Context } from '../../context';
 import * as languageService from './language.service';
 import Language from './language.type';
 
-@Resolver((of) => Language)
+@Resolver(() => Language)
 export default class LanguageResolver {
-  @Query((returns) => [Language])
+  @Query(() => [Language])
   async getLanguages(
     @Arg('name', { nullable: true }) name: string,
     @Arg('id', { nullable: true }) id: string,
@@ -14,7 +14,7 @@ export default class LanguageResolver {
     return await languageService.getLanguages(name, id, ctx);
   }
 
-  @Query((returns) => Language)
+  @Query(() => Language)
   async getLanguageById(@Arg('id') id: number, @Ctx() ctx: Context) {
     return await languageService.getLanguageById(id, ctx);
   }

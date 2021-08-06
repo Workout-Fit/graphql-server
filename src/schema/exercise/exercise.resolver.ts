@@ -3,9 +3,9 @@ import { Context } from '../../context';
 import * as equipmentService from './exercise.service';
 import Exercise from './exercise.type';
 
-@Resolver()
+@Resolver(() => Exercise)
 export default class ExerciseResolver {
-  @Query((returns) => [Exercise])
+  @Query(() => [Exercise])
   async getExercises(
     @Arg('name', { nullable: true }) name: string,
     @Arg('muscleGroupId', { nullable: true }) muscleGroupId: number,
@@ -24,7 +24,7 @@ export default class ExerciseResolver {
     );
   }
 
-  @Query((returns) => Exercise)
+  @Query(() => Exercise)
   async getExerciseById(@Arg('id') id: string, @Ctx() ctx: Context) {
     return await equipmentService.getExerciseById(id, ctx);
   }

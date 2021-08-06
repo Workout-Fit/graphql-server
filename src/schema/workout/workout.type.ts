@@ -61,7 +61,7 @@ export class WorkoutInput {
   @Field({ nullable: true })
   basedOnId?: string;
 
-  @Field((type) => [WorkoutExerciseInput])
+  @Field(() => [WorkoutExerciseInput])
   exercises!: WorkoutExerciseInput[];
 }
 
@@ -82,12 +82,12 @@ export class Workout {
   @Field({ nullable: true })
   basedOn?: Workout;
 
-  @Field((type) => [String])
+  @Field(() => [String])
   muscleGroups!: string[];
 
   @Field()
   user!: User;
 
-  @Field((type) => [WorkoutExercise])
+  @Field(() => [WorkoutExercise])
   exercises!: WorkoutExercise[];
 }

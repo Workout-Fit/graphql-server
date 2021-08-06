@@ -18,7 +18,7 @@ export class ProfileInfo {
   @Field({ nullable: true })
   bio?: string;
 
-  @Field((type) => GraphQLUpload, { nullable: true })
+  @Field(() => GraphQLUpload, { nullable: true })
   profilePicture?: FileUpload;
 }
 
@@ -48,6 +48,6 @@ export class ProfileInfoInput {
   @Field({ nullable: true })
   bio?: string;
 
-  @Field((type) => GraphQLUpload, { nullable: true })
+  @Field(() => GraphQLUpload, { nullable: true })
   profilePicture?: FileUpload;
 }

@@ -5,9 +5,9 @@ import helmet from 'helmet';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import context from './context';
-import { log } from './utils/console';
+import Logger from './utils/console';
 
-const express = require('express');
+import express from 'express';
 
 const { PORT = 4000, BUCKET_HOST } = process.env;
 
@@ -28,8 +28,9 @@ async function startServer() {
       app.use(graphqlUploadExpress());
       server.applyMiddleware({ app });
 
-      await new Promise((resolve) => app.listen({ port: PORT }, resolve));
-      log(`🚀 Server ready at port ${PORT}`, 'green');
+      app.listen({ port: PORT }, () => {
+        success(`🚀 Server ready at port ${PORT}`);
+      });
     }
   } catch (e) {
     log(e, 'red');

@@ -3,7 +3,7 @@ import Difficulty from './difficulty.type';
 import * as difficultyService from './difficulty.service';
 import { Resolver, Arg, Ctx } from 'type-graphql';
 
-@Resolver((of) => Difficulty)
+@Resolver(() => Difficulty)
 export default class DifficultyResolver {
   async getDifficultyLevels(
     @Arg('name', { nullable: true }) name: string,
