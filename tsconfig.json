@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "dist",
+    "esModuleInterop": true,
     "rootDir": "src",
     "lib": ["esnext"],
-    "strict": true, 
+    "strict": true,
     "noImplicitAny": false,
     "experimentalDecorators": true
   },

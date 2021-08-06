@@ -32,7 +32,7 @@ export const updateProfileInfo = async (
   if (profileInfo.profilePicture) {
     const { createReadStream } = await profileInfo.profilePicture;
     const stream = createReadStream();
-    profilePictureUrl = await uploadToBucket(stream);
+    profilePictureUrl = await uploadToBucket(stream, ctx.bucketHost);
   }
 
   return await ctx.prisma.user.update({
