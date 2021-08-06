@@ -1,9 +1,11 @@
-import { Arg, Ctx, Resolver } from 'type-graphql';
+import { Arg, Ctx, Query, Resolver } from 'type-graphql';
 import { Context } from '../../context';
 import * as equipmentService from './exercise.service';
+import Exercise from './exercise.type';
 
 @Resolver()
 export default class ExerciseResolver {
+  @Query((returns) => [Exercise])
   async getExercises(
     @Arg('name', { nullable: true }) name: string,
     @Arg('muscleGroupId', { nullable: true }) muscleGroupId: number,
@@ -21,6 +23,8 @@ export default class ExerciseResolver {
       ctx
     );
   }
+
+  @Query((returns) => Exercise)
   async getExerciseById(@Arg('id') id: string, @Ctx() ctx: Context) {
     return await equipmentService.getExerciseById(id, ctx);
   }
