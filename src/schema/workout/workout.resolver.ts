@@ -1,11 +1,4 @@
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-  ResolverInterface,
-} from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '../../context';
 import * as workoutService from './workout.service';
 import { Workout, WorkoutInput } from './workout.type';
