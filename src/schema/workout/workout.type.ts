@@ -32,9 +32,6 @@ export class WorkoutExerciseInput {
   exerciseId!: string;
 
   @Field()
-  workoutId!: string;
-
-  @Field()
   sets!: number;
 
   @Field()

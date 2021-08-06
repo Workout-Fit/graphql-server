@@ -18,8 +18,8 @@ export class ProfileInfo {
   @Field({ nullable: true })
   bio?: string;
 
-  @Field(() => GraphQLUpload, { nullable: true })
-  profilePicture?: FileUpload;
+  @Field({ nullable: true })
+  profilePicture?: string;
 }
 
 @ObjectType()

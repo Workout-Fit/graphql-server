@@ -1,4 +1,3 @@
-import { Maybe } from '@graphql-tools/utils';
 import { Prisma } from '@prisma/client';
 import { Context } from '../../context';
 import {
@@ -7,7 +6,7 @@ import {
   WorkoutInput,
 } from './workout.type';
 
-const getWorkoutMuscleGroups = (workout) => ({
+const getWorkoutMuscleGroups = workout => ({
   ...workout,
   muscleGroups: Array.from(
     new Set(workout.exercises.map(({ exercise }) => exercise.muscleGroup.name))
@@ -29,7 +28,7 @@ export const getWorkoutsByUserId = async (userId: string, ctx: Context) => {
     },
   });
 
-  return workouts.map((workout) => getWorkoutMuscleGroups(workout));
+  return workouts.map(workout => getWorkoutMuscleGroups(workout));
 };
 
 export const getWorkoutById = async (id: string, ctx: Context) => {
@@ -61,17 +60,15 @@ export const createWorkout = async (workout: WorkoutInput, ctx: Context) => {
         name: workout.name,
         description: workout?.description || '',
         exercises: {
-          create: workout.exercises!.map(
-            (data: Maybe<WorkoutExerciseInput>) => ({
-              sets: data!.sets,
-              rest: data!.rest,
-              repetitions: data!.repetitions,
-              notes: data?.notes || '',
-              exercise: {
-                connect: { id: data!.exerciseId },
-              },
-            })
-          ),
+          create: workout.exercises.map((data: WorkoutExerciseInput) => ({
+            sets: data.sets,
+            rest: data.rest,
+            repetitions: data.repetitions,
+            notes: data?.notes || '',
+            exercise: {
+              connect: { id: data.exerciseId },
+            },
+          })),
         },
         user: {
           connect: { id: workout.userId },
@@ -112,17 +109,15 @@ export const updateWorkout = async (
         name: workout.name,
         description: workout.description,
         exercises: {
-          create: workout.exercises?.map(
-            (data: Maybe<WorkoutExerciseInput>) => ({
-              sets: data!.sets,
-              rest: data!.rest,
-              repetitions: data!.repetitions,
-              notes: data!.notes,
-              exercise: {
-                connect: { id: data?.exerciseId },
-              },
-            })
-          ),
+          create: workout.exercises?.map((data: WorkoutExerciseInput) => ({
+            sets: data.sets,
+            rest: data.rest,
+            repetitions: data.repetitions,
+            notes: data.notes,
+            exercise: {
+              connect: { id: data?.exerciseId },
+            },
+          })),
         },
         user: {
           connect: { id: workout.userId },
