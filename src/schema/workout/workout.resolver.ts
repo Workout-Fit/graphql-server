@@ -8,9 +8,10 @@ export default class WorkoutResolver {
   @Query(() => [Workout])
   async getWorkoutsByUserId(
     @Arg('userId') userId: string,
+    @Arg('workoutName', { nullable: true }) workoutName: string,
     @Ctx() ctx: Context
   ) {
-    return await workoutService.getWorkoutsByUserId(userId, ctx);
+    return await workoutService.getWorkoutsByUserId(userId, workoutName, ctx);
   }
 
   @Query(() => Workout)
@@ -37,7 +38,7 @@ export default class WorkoutResolver {
 
   @Mutation(() => Workout)
   async deleteWorkout(@Arg('id') id: string, @Ctx() ctx: Context) {
-    await workoutService.deleteWorkout(id, ctx);
+    return await workoutService.deleteWorkout(id, ctx);
   }
 
   @Mutation(() => Workout)

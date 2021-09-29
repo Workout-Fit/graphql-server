@@ -13,9 +13,16 @@ const getWorkoutMuscleGroups = workout => ({
   ),
 });
 
-export const getWorkoutsByUserId = async (userId: string, ctx: Context) => {
+export const getWorkoutsByUserId = async (
+  userId: string,
+  workoutName: string,
+  ctx: Context
+) => {
   const workouts = await ctx.prisma.workout.findMany({
-    where: { userId },
+    where: {
+      userId,
+      name: { contains: workoutName ?? undefined, mode: 'insensitive' },
+    },
     include: {
       exercises: {
         include: {
@@ -190,13 +197,8 @@ export const copyWorkoutById = async (
   return getWorkoutMuscleGroups(copiedWorkout);
 };
 
-export const deleteWorkout = async (id: string, ctx: Context) => {
-  await ctx.prisma.workoutExercise.deleteMany({
-    where: { workoutId: id },
-  });
-
-  return await ctx.prisma.workout.delete({
+export const deleteWorkout = async (id: string, ctx: Context) =>
+  await ctx.prisma.workout.delete({
     where: { id },
     include: { user: true },
   });
-};

@@ -36,7 +36,7 @@ const colors: {
   },
 };
 
-const log = (message: string, foreground?: Color, background?: Color) =>
+const log = (message: unknown, foreground?: Color, background?: Color) =>
   console.log(
     `${colors.foreground[foreground ?? ''] ?? ''}${
       colors.background[background ?? ''] ?? ''
@@ -44,8 +44,8 @@ const log = (message: string, foreground?: Color, background?: Color) =>
   );
 
 const logger = {
-  success: (message: string) => log(message, 'green'),
-  error: (message: string) => log(message, 'red'),
+  success: (message: unknown) => log(message, 'green'),
+  error: (message: unknown) => log(message, 'red'),
 };
 
 export default logger;

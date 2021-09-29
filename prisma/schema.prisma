@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(dbgenerated("uuid_generate_v4()")) @map("user_id")
+  id          String       @id(map: "pk_user") @default(dbgenerated("uuid_generate_v4()")) @map("user_id")
   profileInfo ProfileInfo?
   workout     Workout[]    @relation("userToworkout")
 
@@ -16,7 +16,7 @@ model User {
 }
 
 model Difficulty {
-  id        Int        @id @default(autoincrement()) @map("difficulty_id")
+  id        Int        @id(map: "pk_difficulty") @default(autoincrement()) @map("difficulty_id")
   name      String     @db.VarChar(20)
   exercises Exercise[]
 
@@ -24,7 +24,7 @@ model Difficulty {
 }
 
 model Equipment {
-  id        Int        @id @default(autoincrement()) @map("equipment_id")
+  id        Int        @id(map: "pk_equipment") @default(autoincrement()) @map("equipment_id")
   name      String     @db.VarChar(40)
   exercises Exercise[]
 
@@ -32,7 +32,7 @@ model Equipment {
 }
 
 model ExerciseType {
-  id        Int        @id @default(autoincrement()) @map("exercise_type_id")
+  id        Int        @id(map: "pk_exercise_type") @default(autoincrement()) @map("exercise_type_id")
   name      String     @db.VarChar(30)
   exercises Exercise[]
 
@@ -40,7 +40,7 @@ model ExerciseType {
 }
 
 model MuscleGroup {
-  id        Int        @id @default(autoincrement()) @map("muscle_group_id")
+  id        Int        @id(map: "pk_tag") @default(autoincrement()) @map("muscle_group_id")
   name      String     @db.VarChar(25)
   exercises Exercise[]
 
@@ -48,60 +48,59 @@ model MuscleGroup {
 }
 
 model ProfileInfo {
-  id             String   @id @map("user_id")
+  id             String   @id(map: "pk_profileinfo") @map("user_id")
   height         Decimal? @db.Decimal
   weight         Decimal? @db.Decimal
   bio            String?  @db.VarChar(140)
-  profilePicture String?  @db.VarChar(200) @map("profile_picture")
+  profilePicture String?  @map("profile_picture") @db.VarChar(200)
   name           String   @db.VarChar(50)
-  username       String   @unique @db.VarChar(20)
-  user           User     @relation(fields: [id], references: [id])
+  username       String   @unique(map: "unique_username_constraint") @db.VarChar(16)
+  user           User     @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_13")
 
-  @@index([id], name: "fkidx_14")
+  @@index([id], map: "fkidx_14")
   @@map("profile_info")
 }
 
 model Exercise {
-  id             String            @id @default(dbgenerated("uuid_generate_v4()")) @map("exercise_id") @db.Uuid
+  id             String            @id(map: "pk_exercise") @default(dbgenerated("uuid_generate_v4()")) @map("exercise_id") @db.Uuid
   name           String            @db.VarChar(100)
   muscleGroupId  Int               @map("muscle_group_id")
   exerciseTypeId Int               @map("exercise_type_id")
   equipmentId    Int               @map("equipment_id")
   difficultyId   Int               @map("difficulty_id")
   languageId     Int               @default(1) @map("language_id")
-  difficulty     Difficulty        @relation(fields: [difficultyId], references: [id])
-  equipment      Equipment         @relation(fields: [equipmentId], references: [id])
-  exerciseType   ExerciseType      @relation(fields: [exerciseTypeId], references: [id])
-  language       Language          @relation("exerciseToLanguage", fields: [languageId], references: [id])
-  muscleGroup    MuscleGroup       @relation(fields: [muscleGroupId], references: [id])
+  difficulty     Difficulty        @relation(fields: [difficultyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_114")
+  equipment      Equipment         @relation(fields: [equipmentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_98")
+  exerciseType   ExerciseType      @relation(fields: [exerciseTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_91")
+  language       Language          @relation("exerciseToLanguage", fields: [languageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_105")
+  muscleGroup    MuscleGroup       @relation(fields: [muscleGroupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_60")
   workouts       WorkoutExercise[]
 
-  @@index([languageId], name: "fkidx_106")
-  @@index([difficultyId], name: "fkidx_115")
-  @@index([muscleGroupId], name: "fkidx_61")
-  @@index([exerciseTypeId], name: "fkidx_92")
-  @@index([equipmentId], name: "fkidx_99")
+  @@index([languageId], map: "fkidx_106")
+  @@index([difficultyId], map: "fkidx_115")
+  @@index([muscleGroupId], map: "fkidx_61")
+  @@index([exerciseTypeId], map: "fkidx_92")
+  @@index([equipmentId], map: "fkidx_99")
   @@map("exercise")
 }
 
 model Workout {
-  id           String            @id @default(dbgenerated("uuid_generate_v4()")) @map("workout_id") @db.Uuid
+  id           String            @id(map: "pk_routine") @default(dbgenerated("uuid_generate_v4()")) @map("workout_id") @db.Uuid
   userId       String            @map("user_id")
   name         String            @db.VarChar(50)
   description  String            @db.VarChar(140)
   creationDate DateTime          @default(dbgenerated("timezone('utc'::text, now())")) @map("creation_date") @ignore @db.Timestamptz(6)
   basedOnId    String?           @map("based_on") @db.Uuid
-  basedOn      Workout?          @relation("BasedWorkouts", fields: [basedOnId], references: [id])
-  user         User              @relation("userToworkout", fields: [userId], references: [id])
+  basedOn      Workout?          @relation("BasedWorkouts", fields: [basedOnId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_79")
+  user         User              @relation("userToworkout", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_23")
   baseOf       Workout[]         @relation("BasedWorkouts")
   exercises    WorkoutExercise[]
 
-  @@index([userId], name: "fkidx_24")
-  @@index([basedOnId], name: "fkidx_80")
+  @@index([userId], map: "fkidx_24")
+  @@index([basedOnId], map: "fkidx_80")
   @@map("workout")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model WorkoutExercise {
   sets        Int
   repetitions Int
@@ -109,17 +108,17 @@ model WorkoutExercise {
   exerciseId  String   @map("exercise_id") @db.Uuid
   workoutId   String   @map("workout_id") @db.Uuid
   rest        Int
-  id          Int      @id @default(autoincrement()) @map("workout_exercise_id")
-  exercise    Exercise @relation(fields: [exerciseId], references: [id])
-  workout     Workout  @relation(fields: [workoutId], references: [id])
+  id          Int      @id(map: "pk_workout_exercise") @default(autoincrement()) @map("workout_exercise_id")
+  exercise    Exercise @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_70")
+  workout     Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_73")
 
-  @@index([exerciseId], name: "fkidx_71")
-  @@index([workoutId], name: "fkidx_74")
+  @@index([exerciseId], map: "fkidx_71")
+  @@index([workoutId], map: "fkidx_74")
   @@map("workout_exercise")
 }
 
 model Language {
-  id           Int        @id @default(autoincrement()) @map("language_id")
+  id           Int        @id(map: "pk_language") @default(autoincrement()) @map("language_id")
   name         String     @db.VarChar(30)
   languageCode String     @map("language_code") @db.Char(5)
   exercise     Exercise[] @relation("exerciseToLanguage")
